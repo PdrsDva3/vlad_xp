@@ -7,7 +7,7 @@ import (
 
 type User interface {
 	GetMe(ctx context.Context, id int) (*models.GetUser, error)
-	DeleteMe(ctx context.Context, id int) error
+	Delete(ctx context.Context, id int) error
 	Create(ctx context.Context, user models.CreateUser) (int, error)
-	Login(ctx context.Context, user models.CreateUser) error
+	Login(ctx context.Context, user models.CreateUser) (int, error)
 }

@@ -8,6 +8,6 @@ type GetUser struct {
 }
 
 type CreateUser struct {
-	Email          string `json:"email"`
-	HashedPassword string `json:"hashed_password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }

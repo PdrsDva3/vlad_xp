@@ -18,6 +18,20 @@ func InitUserRepo(db *sqlx.DB) repository.UserRepo {
 	}
 }
 
+func (u User) GetIDByEmail(ctx context.Context, email string) (int, error) {
+	var id int
+
+	row := u.db.QueryRowContext(ctx, `SELECT id FROM users WHERE users.email = $1`,
+		email)
+
+	err := row.Scan(&id)
+	if err != nil {
+		return 0, err
+	}
+
+	return id, nil
+}
+
 func (u User) GetPwdByEmail(ctx context.Context, email string) (string, error) {
 	var hashedPwd string
 	row := u.db.QueryRowContext(ctx, `SELECT hashed_pwd FROM users WHERE users.email = $1`,
@@ -90,7 +104,7 @@ func (u User) Create(ctx context.Context, user models.CreateUser) (int, error) {
 
 	var id int
 
-	row := tx.QueryRowContext(ctx, `INSERT INTO users (email, hashed_pwd) values ($1, $2) RETURNING id`, user.Email, user.HashedPassword)
+	row := tx.QueryRowContext(ctx, `INSERT INTO users (email, hashed_pwd) values ($1, $2) RETURNING id`, user.Email, user.Password)
 	err = row.Scan(&id)
 	if err != nil {
 		if rbErr := tx.Rollback(); rbErr != nil {
