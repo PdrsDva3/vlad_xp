@@ -51,7 +51,7 @@ func (u User) Get(ctx context.Context, id int) (*models.GetUser, error) {
 	row := u.db.QueryRowContext(ctx, `SELECT username, surname,  phone FROM users WHERE users.id = $1`,
 		id)
 
-	err := row.Scan(&user.Name, user.Surname, &user.Phone)
+	err := row.Scan(&user.Name, &user.Surname, &user.Phone)
 	if err != nil {
 		return nil, err
 	}

@@ -5,21 +5,25 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"vlad_xp/internal/models"
 	"vlad_xp/internal/repository"
+	"vlad_xp/pkg/log"
 )
 
 type userService struct {
 	userRepo repository.UserRepo
+	logger   *log.Logs
 }
 
-func InitUserService(userRepo repository.UserRepo) User {
+func InitUserService(userRepo repository.UserRepo, logger *log.Logs) User {
 	return userService{
 		userRepo: userRepo,
+		logger:   logger,
 	}
 }
 
 func (u userService) GetMe(ctx context.Context, id int) (*models.GetUser, error) {
 	user, err := u.userRepo.Get(ctx, id)
 	if err != nil {
+		u.logger.Error(err.Error())
 		return nil, err
 	}
 

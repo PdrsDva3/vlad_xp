@@ -73,7 +73,7 @@ func (h UserHandler) GetUser(g *gin.Context) {
 		g.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	g.JSON(http.StatusOK, gin.H{"user": user})
+	g.JSON(http.StatusOK, gin.H{"user": &user})
 }
 
 // @Summary Delete user

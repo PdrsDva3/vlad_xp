@@ -4,11 +4,19 @@ import (
 	"vlad_xp/internal/delivery"
 	"vlad_xp/pkg/config"
 	"vlad_xp/pkg/database"
+	"vlad_xp/pkg/log"
 )
 
 func main() {
-	config.InitConfig()
-	db := database.GetDB()
+	logger, infoFile, errorFile := log.InitLogger()
+	defer infoFile.Close()
+	defer errorFile.Close()
 
-	delivery.Start(db)
+	config.InitConfig()
+	logger.Info("config init success")
+
+	db := database.GetDB()
+	logger.Info("db init success")
+
+	delivery.Start(db, logger)
 }
