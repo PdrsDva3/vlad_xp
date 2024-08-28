@@ -21,6 +21,6 @@
 go.work
 
 
-deploy/.env
+backend/deploy/.env
 
 *.log
