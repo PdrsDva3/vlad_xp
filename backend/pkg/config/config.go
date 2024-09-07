@@ -18,6 +18,7 @@ const (
 func InitConfig() {
 	envPath, _ := os.Getwd()
 	envPath = filepath.Join(envPath, "..")
+	envPath = filepath.Join(envPath, "/backend")
 	envPath = filepath.Join(envPath, "/deploy")
 
 	viper.SetConfigName(".env")
