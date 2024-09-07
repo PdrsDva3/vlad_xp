@@ -13,18 +13,36 @@ function App() {
 	const submitButtonRef = useRef(null);
 
 	/// ↓ API ↓
-	const DATA_URL = 'PASTE URL PLEASE';
+	const USER_URL = 'http://localhost:63342/user';
 
-	const fetchData = () => {
-		axios.get(DATA_URL).then((rawResponse) => {
+	const getData = (id) => {
+		axios.get(`${USER_URL}/get/${id}`).then((rawResponse) => {
 			const response = rawResponse.data;
 			console.log('response', response);
 		});
 	};
 
-	useEffect(() => {
-		fetchData();
-	}, []);
+	// const postData = (formData) => {
+	// 	fetch(`${DATA_URL}/create`, {
+	// 		method: "POST",
+	// 		headers: { "Content-Type": "application/json;charset=utf-8" },
+	// 		body: JSON.stringify({
+	// 			// title: title,
+	// 		}),
+	// 	})
+	// 	.then((res) => {
+	// 		if (res.ok) {
+	// 			return res.data;
+	// 		}
+	// 	})
+	// 	.catch((e) => {
+	// 		throw e;
+	// 	});
+	// }
+
+	// useEffect(() => {
+	// 	getData();
+	// }, []);
 
 	/// ↑ API ↑
 
@@ -118,6 +136,25 @@ function App() {
 		setFormError({ ...formError, rePasswordError: newRePasswordError });
 	};
 
+	const postData = (formData) => {
+		fetch(`${USER_URL}/create`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json;charset=utf-8" },
+			body: JSON.stringify({
+				email: formData.email,
+				password: formData.password,
+			}),
+		})
+			.then((res) => {
+				if (res.ok) {
+					return res.data;
+				}
+			})
+			.catch((e) => {
+				throw e;
+			});
+	}
+
 	// SUBMIT
 	const onSubmit = (event) => {
 		event.preventDefault();
@@ -126,12 +163,14 @@ function App() {
 
 		if (checkData(formData)) {
 			sendFormData(formData);
+			postData(formData)
 			setFormData(EMPTY_FORM_DATA);
 		} else {
 			checkDataMakeError(formData, newFormError);
 			setFormError({ ...newFormError });
 		}
 	};
+
 
 	return (
 		<section className="login">
